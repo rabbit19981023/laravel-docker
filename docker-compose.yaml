@@ -1,0 +1,25 @@
+services:
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./public:/srv/todo.com/public
+    ports:
+      - 80:80
+      - 443:443
+
+  laravel:
+    build:
+      dockerfile: php.dockerfile
+      context: .
+    tty: true # keep container running
+    working_dir: /workspace
+    volumes:
+      - ./laravel:/workspace
+      - /tmp/tmux-1000/default:/tmp/tmux-1000/default # to share clipboard between container and localhost
+
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: root

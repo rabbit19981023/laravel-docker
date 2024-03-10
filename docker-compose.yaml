@@ -3,7 +3,8 @@ services:
     image: nginx:alpine
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./public:/srv/todo.com/public
+      - ./laravel/public:/var/www/html/public
+      - php-sock:/var/run/php
     ports:
       - 80:80
       - 443:443
@@ -13,13 +14,20 @@ services:
       dockerfile: php.dockerfile
       context: .
     tty: true # keep container running
-    working_dir: /workspace
+    working_dir: /var/www/html
     volumes:
-      - ./laravel:/workspace
+      - ./laravel:/var/www/html
       - /tmp/tmux-1000/default:/tmp/tmux-1000/default # to share clipboard between container and localhost
+      - ./zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+      - php-sock:/var/run/php
 
   mysql:
     image: mysql:latest
+    volumes:
+      - ./.mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: root
+
+volumes:
+  php-sock:

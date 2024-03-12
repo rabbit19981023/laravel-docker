@@ -34,3 +34,7 @@ COPY --from=composer/composer:latest-bin /composer /usr/bin/composer
 
 # install pcntl extension for phpactor (php lsp)
 RUN docker-php-ext-install pcntl
+
+# install mysql client
+RUN apt-get install -y default-mysql-client
+RUN docker-php-ext-install pdo_mysql

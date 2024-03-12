@@ -27,7 +27,7 @@ services:
       - ./.mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: root
+      MYSQL_DATABASE: laravel
 
 volumes:
   php-sock:
